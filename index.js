@@ -1,9 +1,23 @@
 const fs = require('fs');
 const http = require('http');
+const url = require('url');
 
 const server=http.createServer((req, res) => {
-  console.log(req);
-  res.end('Hello from the server!');
+  const patName = req.url;
+
+  if ( patName === '/' || patName ==='/overview') {
+    res.end('This is from overview!');
+  } else if (patName === '/product') {
+    res.end('This is from product!');
+  } else {
+    res.writeHead(404, {
+      'content-type':'text/html',
+      'my-own-header': 'Hello world'
+    });
+    res.end('The page not found');
+  }
+
+
 });
 
 server.listen(8000, '127.0.0.1', () => {
