@@ -2,6 +2,12 @@ const fs = require('fs');
 const http = require('http');
 const url = require('url');
 
+/////////////////////////////////
+// Server
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+  const dataOj= JSON.parse(data);
+
+
 const server=http.createServer((req, res) => {
   const patName = req.url;
 
@@ -9,12 +15,18 @@ const server=http.createServer((req, res) => {
     res.end('This is from overview!');
   } else if (patName === '/product') {
     res.end('This is from product!');
+  } else if (patName === '/api') {
+      res.writeHead(200, {
+        'content-type':'application/json'
+      });
+      res.end(data);
+    
   } else {
     res.writeHead(404, {
       'content-type':'text/html',
       'my-own-header': 'Hello world'
     });
-    res.end('The page not found');
+    res.end('<h1>The page not found</h1>');
   }
 
 
@@ -50,5 +62,4 @@ server.listen(8000, '127.0.0.1', () => {
 // });
 // console.log('Will read file!');
 
-/////////////////////////////////
-// Server
+
